@@ -1,4 +1,4 @@
-const { getPrismaClient } = require("./common");
+const { prisma } = require("./common");
 const jwt = require("jsonwebtoken");
 
 const isLoggedIn = async (req, res, next) => {
@@ -18,7 +18,6 @@ const isLoggedIn = async (req, res, next) => {
 };
 
 const createUser = async (username, email, password) => {
-  const prisma = await getPrismaClient();
   const response = await prisma.User.create({
     data: {
       username,
@@ -31,7 +30,6 @@ const createUser = async (username, email, password) => {
 };
 
 const loginUser = async (email) => {
-  const prisma = await getPrismaClient();
   const response = await prisma.User.findFirstOrThrow({
     where: {
       email,
@@ -42,7 +40,6 @@ const loginUser = async (email) => {
 };
 
 const getUser = async (id) => {
-  const prisma = await getPrismaClient();
   const response = await prisma.User.findFirstOrThrow({
     where: {
       id,
@@ -58,7 +55,6 @@ const getUser = async (id) => {
 };
 
 const getUserNamesByIds = async (ids) => {
-  const prisma = await getPrismaClient();
   const response = await prisma.User.findMany({
     where: {
       id: {
@@ -77,14 +73,12 @@ const getUserNamesByIds = async (ids) => {
 };
 
 const getAllUsers = async () => {
-  const prisma = await getPrismaClient();
   const response = await prisma.User.findMany({});
   console.log(response);
   return response;
 };
 
 const getOneUser = async (id) => {
-  const prisma = await getPrismaClient();
   const response = await prisma.User.findFirstOrThrow({
     where: {
       id,
@@ -95,7 +89,6 @@ const getOneUser = async (id) => {
 };
 
 const deleteUser = async (id) => {
-  const prisma = await getPrismaClient();
   const response = await prisma.User.delete({
     where: {
       id,
@@ -106,7 +99,6 @@ const deleteUser = async (id) => {
 };
 
 const updateUser = async (id, username, email, password) => {
-  const prisma = await getPrismaClient();
   const response = await prisma.User.update({
     where: {
       id,
@@ -118,14 +110,12 @@ const updateUser = async (id, username, email, password) => {
 };
 
 const getItems = async () => {
-  const prisma = await getPrismaClient();
   const response = await prisma.Item.findMany({});
   console.log(response);
   return response;
 };
 
 const getItem = async (id) => {
-  const prisma = await getPrismaClient();
   const response = await prisma.Item.findFirstOrThrow({
     where: {
       id,
@@ -136,7 +126,6 @@ const getItem = async (id) => {
 };
 
 const postAudio = async (id, user, name, description) => {
-  const prisma = await getPrismaClient();
   const response = await prisma.Item.create({
     data: {
       id,
@@ -150,7 +139,6 @@ const postAudio = async (id, user, name, description) => {
 };
 
 const getReview = async (itemID) => {
-  const prisma = await getPrismaClient();
   const response = await prisma.Review.findMany({
     where: {
       itemID,
@@ -161,7 +149,6 @@ const getReview = async (itemID) => {
 };
 
 const getSpecificReview = async (itemID, id) => {
-  const prisma = await getPrismaClient();
   const response = await prisma.Review.findFirstOrThrow({
     where: {
       itemID,
@@ -173,7 +160,6 @@ const getSpecificReview = async (itemID, id) => {
 };
 
 const createReview = async (itemID, reviewText, userID) => {
-  const prisma = await getPrismaClient();
   const response = await prisma.Review.create({
     data: {
       reviewText,
@@ -186,7 +172,6 @@ const createReview = async (itemID, reviewText, userID) => {
 };
 
 const getReviews = async (userID) => {
-  const prisma = await getPrismaClient();
   const response = await prisma.Review.findMany({
     where: {
       userID,
@@ -197,7 +182,6 @@ const getReviews = async (userID) => {
 };
 
 const updateReview = async (userID, id) => {
-  const prisma = await getPrismaClient();
   const response = await prisma.Review.update({
     where: {
       id,
@@ -212,7 +196,6 @@ const updateReview = async (userID, id) => {
 };
 
 const createComment = async (itemID, reviewID, commentText, userID) => {
-  const prisma = await getPrismaClient();
   const response = await prisma.Comment.create({
     data: {
       commentText,
@@ -226,7 +209,6 @@ const createComment = async (itemID, reviewID, commentText, userID) => {
 };
 
 const getComments = async (userID) => {
-  const prisma = await getPrismaClient();
   const response = await prisma.Comment.findMany({
     where: {
       userID,
@@ -237,7 +219,6 @@ const getComments = async (userID) => {
 };
 
 const getReviewComments = async (reviewID) => {
-  const prisma = await getPrismaClient();
   const response = await prisma.Comment.findMany({
     where: {
       reviewID,
@@ -248,7 +229,6 @@ const getReviewComments = async (reviewID) => {
 };
 
 const updateComment = async (userID, id, commentText) => {
-  const prisma = await getPrismaClient();
   const response = await prisma.Comment.update({
     where: {
       id,
@@ -263,7 +243,6 @@ const updateComment = async (userID, id, commentText) => {
 };
 
 const deleteComment = async (userID, id) => {
-  const prisma = await getPrismaClient();
   const response = await prisma.Comment.delete({
     where: {
       id,
@@ -275,7 +254,6 @@ const deleteComment = async (userID, id) => {
 };
 
 const deleteReview = async (userID, id) => {
-  const prisma = await getPrismaClient();
   const response = await prisma.Review.delete({
     where: {
       id,
