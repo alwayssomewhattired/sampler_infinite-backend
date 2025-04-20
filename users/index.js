@@ -10,7 +10,9 @@ const {
   getOneUser,
   getUserNamesByIds,
   deleteUser,
-  updateUser,
+  updateUserEmail,
+  updateUserUsername,
+  updateUserPassword,
 } = require("../db");
 
 const isLoggedIn = async (req, res, next) => {
@@ -122,22 +124,45 @@ router.delete("/:id", isLoggedIn, async (req, res, next) => {
   }
 });
 
-router.put("/:id", isLoggedIn, async (req, res, next) => {
+router.put("/:id/email", isLoggedIn, async (req, res, next) => {
   try {
     if (req.user == undefined) {
       res.status(401).send("No user logged in.");
     }
     const id = req.params.id;
-    const { username, email, normal_password } = req.body;
-    if (normal_password == undefined) {
-      const response = await updateUser(id, username, email);
-      res.send(response);
-    } else {
-      const salt = await bcrypt.genSalt(10);
-      const password = await bcrypt.hash(normal_password, salt);
-      const response = await updateUser(id, username, email, password);
-      res.send(response);
+    const { email } = req.body;
+    const response = await updateUserEmail(id, email);
+    res.send(response);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.put("/:id/username", isLoggedIn, async (req, res, next) => {
+  try {
+    if (req.user == undefined) {
+      res.status(401).send("No user logged in.");
     }
+    const id = req.params.id;
+    const { username } = req.body;
+    const response = await updateUserUsername(id, username);
+    res.send(response);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.put("/:id/password", isLoggedIn, async (req, res, next) => {
+  try {
+    if (req.user == undefined) {
+      res.status(401).send("No user logged in.");
+    }
+    const id = req.params.id;
+    const { normal_password } = req.body;
+    const salt = await bcrypt.genSalt(10);
+    const password = await bcrypt.hash(normal_password, salt);
+    const response = await updateUserPassword(id, password);
+    res.send(response);
   } catch (error) {
     next(error);
   }

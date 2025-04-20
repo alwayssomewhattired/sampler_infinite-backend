@@ -98,12 +98,34 @@ const deleteUser = async (id) => {
   return response;
 };
 
-const updateUser = async (id, username, email, password) => {
+const updateUserEmail = async (id, email) => {
   const response = await prisma.User.update({
     where: {
       id,
     },
-    data: { username, email, password },
+    data: { email },
+  });
+  console.log(response);
+  return response;
+};
+
+const updateUserUsername = async (id, username) => {
+  const response = await prisma.User.update({
+    where: {
+      id,
+    },
+    data: { username },
+  });
+  console.log(response);
+  return response;
+};
+
+const updateUserPassword = async (id, password) => {
+  const response = await prisma.User.update({
+    where: {
+      id,
+    },
+    data: { password },
   });
   console.log(response);
   return response;
@@ -272,7 +294,9 @@ module.exports = {
   getOneUser,
   getUserNamesByIds,
   deleteUser,
-  updateUser,
+  updateUserUsername,
+  updateUserEmail,
+  updateUserPassword,
   getItems,
   getItem,
   postAudio,
