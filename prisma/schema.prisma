@@ -19,7 +19,7 @@ model User {
   email String @unique
   password  String  @unique
 
-  reviews Review[]
+  // reviews Review[]
   comments Comment[]
 }
 
@@ -30,33 +30,33 @@ model Item {
   description String?
 
   comments Comment[]
-  reviews Review[]
+  // reviews Review[]
 }
 
-model Review {
-  id  String @id @default(uuid())
-  reviewText String
+// model Review {
+//   id  String @id @default(uuid())
+//   reviewText String
 
-  userID String
-  review User @relation(fields: [userID], references: [id], onDelete: Cascade)
+//   userID String
+//   review User @relation(fields: [userID], references: [id], onDelete: Cascade)
 
-  itemID String
-  item Item @relation(fields: [itemID], references: [id], onDelete: Cascade)
+//   itemID String
+//   item Item @relation(fields: [itemID], references: [id], onDelete: Cascade)
 
-  @@unique([userID, itemID])
-  comments Comment[]
-}
+//   @@unique([userID, itemID])
+//   comments Comment[]
+// }
 
 model Comment {
   id          String @id @default(uuid())
   commentText String
 
-  userID String
-  user   User   @relation(fields: [userID], references: [id], onDelete: Cascade)
+  userID String?
+  user   User?   @relation(fields: [userID], references: [id])
 
   itemID String
-  item Item @relation(fields: [itemID], references: [id], onDelete: Cascade)
+  item Item @relation(fields: [itemID], references: [id])
 
-  reviewID  String
-  review Review @relation(fields: [reviewID], references: [id], onDelete: Cascade)
+  // reviewID  String
+  // review Review @relation(fields: [reviewID], references: [id], onDelete: Cascade)
 }

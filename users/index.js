@@ -39,7 +39,6 @@ router.post("/register", async (req, res, next) => {
     const response = await createUser(username, email, password);
     const token = jwt.sign({ id: response.id }, process.env.JWT);
     const me = response.id;
-    // res.header("Access-Control-Allow-Origin", "*");
     res.send({ token, me });
   } catch (error) {
     next(error);
