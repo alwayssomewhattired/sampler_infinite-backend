@@ -84,19 +84,6 @@ router.get("/allUsers", isLoggedIn, async (req, res, next) => {
   }
 });
 
-router.get("/:id", isLoggedIn, async (req, res, next) => {
-  try {
-    if (req.user == undefined) {
-      res.status(401).send("No user logged in.");
-    }
-    const id = req.params.id;
-    const response = await getOneUser(id);
-    res.send(response);
-  } catch (error) {
-    next(error);
-  }
-});
-
 router.get("/allUserNames", isLoggedIn, async (req, res, next) => {
   try {
     if (req.user == undefined) {
@@ -104,6 +91,19 @@ router.get("/allUserNames", isLoggedIn, async (req, res, next) => {
     }
     const ids = req.body;
     const response = await getUserNamesByIds(ids);
+    res.send(response);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get("/:id", isLoggedIn, async (req, res, next) => {
+  try {
+    if (req.user == undefined) {
+      res.status(401).send("No user logged in.");
+    }
+    const id = req.params.id;
+    const response = await getOneUser(id);
     res.send(response);
   } catch (error) {
     next(error);
