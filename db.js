@@ -55,6 +55,7 @@ const getUser = async (id) => {
 };
 
 const getUserNamesByIds = async (ids) => {
+  console.log(ids);
   const response = await prisma.User.findMany({
     where: {
       id: {
@@ -62,14 +63,15 @@ const getUserNamesByIds = async (ids) => {
       },
     },
     select: {
+      id: true,
       username: true, // Only select the 'name' field
     },
   });
   console.log(response);
   // Map to extract names only
-  const names = response.map((User) => User.username);
-  console.log(names);
-  return names;
+  // const names = response.map((User) => User.username);
+  // console.log(names);
+  return response;
 };
 
 const getAllUsers = async () => {
@@ -223,6 +225,46 @@ const updateComment = async (userID, id, commentText) => {
   return response;
 };
 
+const getReactComment = async (commentIDs) => {
+  const response = await prisma.commentReaction.groupBy({
+    by: ["commentID", "reactionType"],
+    where: {
+      commentID: {
+        in: commentIDs,
+      },
+    },
+    _count: {
+      reactionType: true,
+    },
+  });
+  console.log(response);
+  return response;
+};
+
+const postReactComment = async (userID, commentID, reaction) => {
+  const response = await prisma.commentReaction.upsert({
+    where: {
+      userID_commentID: {
+        // using the composite constraint
+        userID: userID,
+        commentID: commentID,
+      },
+    },
+    update: {
+      // if record already exists, then this
+      reactionType: reaction,
+    },
+    create: {
+      // if record doesn't exist, then this
+      userID: userID,
+      commentID: commentID,
+      reactionType: reaction,
+    },
+  });
+  console.log(response);
+  return response;
+};
+
 const deleteComment = async (userID, id) => {
   const response = await prisma.Comment.delete({
     where: {
@@ -332,6 +374,8 @@ module.exports = {
   getComments,
   getAudioComment,
   updateComment,
+  postReactComment,
+  getReactComment,
   deleteComment,
   // getReview,
   // getReviews,

@@ -6,6 +6,8 @@ const {
   getComments,
   getAudioComment,
   updateComment,
+  getReactComment,
+  postReactComment,
   deleteComment,
   // getReviewComments,
   // deleteReview,
@@ -59,6 +61,36 @@ router.post("/:itemId/comments", isLoggedIn, async (req, res, next) => {
   }
 });
 
+router.post("/reactionType", async (req, res, next) => {
+  try {
+    const { commentIDs } = req.body
+    const response = await getReactComment(commentIDs);
+    res.send(response);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post(
+  "/:commentID/reactionComment",
+  isLoggedIn,
+  async (req, res, next) => {
+    try {
+      if (req.user == undefined) {
+        res.status(401).send("No user logged in.");
+      } else {
+        const userID = req.user.id;
+        const commentID = req.params.commentID;
+        const reaction = req.body.reaction;
+        const response = await postReactComment(userID, commentID, reaction);
+        res.send(response);
+      }
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
 router.get("/me", isLoggedIn, async (req, res, next) => {
   try {
     if (req.user == undefined) {
@@ -75,13 +107,13 @@ router.get("/me", isLoggedIn, async (req, res, next) => {
 
 router.get("/:itemId/comment", isLoggedIn, async (req, res, next) => {
   try {
-    if (req.user == undefined) {
-      res.status(401).send("No user logged in.");
-    } else {
-      const itemID = req.params.itemId;
-      const response = await getAudioComment(itemID);
-      res.send(response);
-    }
+    // if (req.user == undefined) {
+    //   res.status(401).send("No user logged in.");
+    // } else {
+    const itemID = req.params.itemId;
+    const response = await getAudioComment(itemID);
+    res.send(response);
+    // }
   } catch (error) {
     next(error);
   }

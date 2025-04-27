@@ -21,6 +21,7 @@ model User {
 
   // reviews Review[]
   comments Comment[]
+  reactions CommentReaction[] 
 }
 
 model Item {
@@ -31,6 +32,41 @@ model Item {
 
   comments Comment[]
   // reviews Review[]
+}
+
+
+model Comment {
+  id          String @id @default(uuid())
+  commentText String
+
+  userID String?
+  user   User?   @relation(fields: [userID], references: [id])
+
+  itemID String
+  item Item @relation(fields: [itemID], references: [id])
+
+  created_at DateTime @default (now())
+
+  reactions CommentReaction[]
+
+  // reviewID  String
+  // review Review @relation(fields: [reviewID], references: [id], onDelete: Cascade)
+}
+
+model CommentReaction {
+  userID String
+  commentID String
+  reactionType ReactionType
+
+  user User @relation(fields: [userID], references: [id])
+  comment Comment @relation(fields: [commentID], references: [id], onDelete: Cascade)
+
+  @@id([userID, commentID]) // Composite primary key
+}
+
+enum ReactionType {
+  like
+  dislike
 }
 
 // model Review {
@@ -46,17 +82,3 @@ model Item {
 //   @@unique([userID, itemID])
 //   comments Comment[]
 // }
-
-model Comment {
-  id          String @id @default(uuid())
-  commentText String
-
-  userID String?
-  user   User?   @relation(fields: [userID], references: [id])
-
-  itemID String
-  item Item @relation(fields: [itemID], references: [id])
-
-  // reviewID  String
-  // review Review @relation(fields: [reviewID], references: [id], onDelete: Cascade)
-}

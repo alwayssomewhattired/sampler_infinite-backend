@@ -50,6 +50,7 @@ router.post("/login", async (req, res, next) => {
     const { email, normal_password } = req.body;
     const user = await loginUser(email, normal_password);
     if ((await bcrypt.compare(normal_password, user.password)) == false) {
+      res.status(401).send("Wrong password");
       const error = Error("Wrong password");
       error.status = 401;
       throw error;
@@ -72,17 +73,17 @@ router.get("/aboutMe", isLoggedIn, async (req, res, next) => {
   }
 });
 
-router.get("/allUsers", isLoggedIn, async (req, res, next) => {
-  try {
-    if (req.user == undefined) {
-      res.status(401).send("No user logged in.");
-    }
-    const response = await getAllUsers();
-    res.send(response);
-  } catch (error) {
-    next(error);
-  }
-});
+// router.get("/allUsers", isLoggedIn, async (req, res, next) => {
+//   try {
+//     if (req.user == undefined) {
+//       res.status(401).send("No user logged in.");
+//     }
+//     const response = await getAllUsers();
+//     res.send(response);
+//   } catch (error) {
+//     next(error);
+//   }
+// });
 
 router.get("/allUserNames", isLoggedIn, async (req, res, next) => {
   try {
@@ -91,6 +92,30 @@ router.get("/allUserNames", isLoggedIn, async (req, res, next) => {
     }
     const ids = req.body;
     const response = await getUserNamesByIds(ids);
+    res.send(response);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post("/allUserNamez", async (req, res, next) => {
+  try {
+    const { ids } = req.body;
+    console.log(ids);
+    const response = await getUserNamesByIds(ids);
+    res.send(response);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get("/allUsers", isLoggedIn, async (req, res, next) => {
+  try {
+    console.log("IVE BEEN HIT");
+    if (req.user == undefined) {
+      res.status(401).send("No user logged in.");
+    }
+    const response = await getAllUsers();
     res.send(response);
   } catch (error) {
     next(error);
