@@ -9,6 +9,7 @@ const {
   getReactComment,
   postReactComment,
   deleteComment,
+  createReply,
   // getReviewComments,
   // deleteReview,
 } = require("../db");
@@ -61,9 +62,32 @@ router.post("/:itemId/comments", isLoggedIn, async (req, res, next) => {
   }
 });
 
+router.post("/reply", isLoggedIn, async (req, res, next) => {
+  try {
+    if (req.user == undefined) {
+      res.status(401).send("No user logged in.");
+    } else {
+      const { replyText, parentCommentId, itemID } = req.body;
+      const userID = req.user.id;
+      const commentText = replyText;
+      console.log(parentCommentId);
+      console.log(commentText);
+      const response = await createReply(
+        userID,
+        commentText,
+        parentCommentId,
+        itemID
+      );
+      res.send(response);
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.post("/reactionType", async (req, res, next) => {
   try {
-    const { commentIDs } = req.body
+    const { commentIDs } = req.body;
     const response = await getReactComment(commentIDs);
     res.send(response);
   } catch (error) {

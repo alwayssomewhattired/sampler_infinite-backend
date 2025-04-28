@@ -191,11 +191,35 @@ const createComment = async (itemID, commentText, userID) => {
   return response;
 };
 
+const createReply = async (userID, commentText, parentCommentId, itemID) => {
+  try {
+    const response = await prisma.Comment.create({
+      data: {
+        userID,
+        commentText,
+        parentCommentId,
+        itemID,
+      },
+    });
+    console.log(response);
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 const getComments = async (userID) => {
   const response = await prisma.Comment.findMany({
     where: {
       userID,
     },
+    // include: {
+    //   childComments: {
+    //     include: {
+    //       childComments: true,
+    //     },
+    //   },
+    // },
   });
   console.log(response);
   return response;
@@ -205,6 +229,13 @@ const getAudioComment = async (itemID) => {
   const response = await prisma.Comment.findMany({
     where: {
       itemID,
+    },
+    include: {
+      childComments: {
+        include: {
+          childComments: true,
+        },
+      },
     },
   });
   console.log(response);
@@ -371,6 +402,7 @@ module.exports = {
   postAudio,
   isLoggedIn,
   createComment,
+  createReply,
   getComments,
   getAudioComment,
   updateComment,
