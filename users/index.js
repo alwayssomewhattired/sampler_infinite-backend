@@ -10,6 +10,7 @@ const {
   getOneUser,
   getUserNamesByIds,
   deleteUser,
+  createPhoto,
   updateUserEmail,
   updateUserUsername,
   updateUserPassword,
@@ -111,11 +112,25 @@ router.post("/allUserNamez", async (req, res, next) => {
 
 router.get("/allUsers", isLoggedIn, async (req, res, next) => {
   try {
-    console.log("IVE BEEN HIT");
     if (req.user == undefined) {
       res.status(401).send("No user logged in.");
     }
     const response = await getAllUsers();
+    res.send(response);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post("/profilePhotoDB", isLoggedIn, async (req, res, next) => {
+  try {
+    if (req.user == undefined) {
+      res.status(401).send("No user logged in.");
+    }
+    const id = req.user.id;
+    const { photoId } = req.body;
+    console.log(req.body);
+    const response = await createPhoto(id, photoId);
     res.send(response);
   } catch (error) {
     next(error);

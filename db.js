@@ -48,6 +48,7 @@ const getUser = async (id) => {
       username: true,
       id: true,
       email: true,
+      photoId: true
     },
   });
   console.log(response);
@@ -97,6 +98,16 @@ const deleteUser = async (id) => {
     },
   });
   console.log(response);
+  return response;
+};
+
+const createPhoto = async (id, photoId) => {
+  const response = await prisma.User.update({
+    where: {
+      id,
+    },
+    data: { photoId },
+  });
   return response;
 };
 
@@ -393,6 +404,7 @@ module.exports = {
   getOneUser,
   getUserNamesByIds,
   deleteUser,
+  createPhoto,
   updateUserUsername,
   updateUserEmail,
   updateUserPassword,
