@@ -19,8 +19,6 @@ app.use("/api/comments", require("./comments/index"));
 // app.use("/api/users", require("./reviews/index"));
 
 app.use((err, req, res, next) => {
-  console.log(req.method);
-  console.log(req.url);
   console.error(err.stack);
   res.status(err.status || 500).send(err.message || " Internal server error.");
 });

@@ -70,8 +70,6 @@ router.post("/reply", isLoggedIn, async (req, res, next) => {
       const { replyText, parentCommentId, itemID } = req.body;
       const userID = req.user.id;
       const commentText = replyText;
-      console.log(parentCommentId);
-      console.log(commentText);
       const response = await createReply(
         userID,
         commentText,

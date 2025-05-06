@@ -60,7 +60,7 @@ router.post("/login", async (req, res, next) => {
     const token = jwt.sign({ id: user.id }, process.env.JWT);
     res.send({ token, me });
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 });
 
@@ -129,7 +129,6 @@ router.post("/profilePhotoDB", isLoggedIn, async (req, res, next) => {
     }
     const id = req.user.id;
     const { photoId } = req.body;
-    console.log(req.body);
     const response = await createPhoto(id, photoId);
     res.send(response);
   } catch (error) {

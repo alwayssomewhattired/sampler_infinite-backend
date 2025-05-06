@@ -25,7 +25,7 @@ const createUser = async (username, email, password) => {
       password,
     },
   });
-  console.log(response);
+  //console.log(response);
   return response;
 };
 
@@ -35,7 +35,7 @@ const loginUser = async (email) => {
       email,
     },
   });
-  console.log(response);
+  //console.log(response);
   return response;
 };
 
@@ -48,10 +48,10 @@ const getUser = async (id) => {
       username: true,
       id: true,
       email: true,
-      photoId: true
+      photoId: true,
     },
   });
-  console.log(response);
+  //console.log(response);
   return response;
 };
 
@@ -68,7 +68,7 @@ const getUserNamesByIds = async (ids) => {
       username: true, // Only select the 'name' field
     },
   });
-  console.log(response);
+  //console.log(response);
   // Map to extract names only
   // const names = response.map((User) => User.username);
   // console.log(names);
@@ -77,7 +77,7 @@ const getUserNamesByIds = async (ids) => {
 
 const getAllUsers = async () => {
   const response = await prisma.User.findMany({});
-  console.log(response);
+  //console.log(response);
   return response;
 };
 
@@ -87,7 +87,7 @@ const getOneUser = async (id) => {
       id,
     },
   });
-  console.log(response);
+  //console.log(response);
   return response;
 };
 
@@ -97,7 +97,7 @@ const deleteUser = async (id) => {
       id,
     },
   });
-  console.log(response);
+  //console.log(response);
   return response;
 };
 
@@ -118,7 +118,7 @@ const updateUserEmail = async (id, email) => {
     },
     data: { email },
   });
-  console.log(response);
+  //console.log(response);
   return response;
 };
 
@@ -129,7 +129,7 @@ const updateUserUsername = async (id, username) => {
     },
     data: { username },
   });
-  console.log(response);
+  //console.log(response);
   return response;
 };
 
@@ -140,13 +140,13 @@ const updateUserPassword = async (id, password) => {
     },
     data: { password },
   });
-  console.log(response);
+  //console.log(response);
   return response;
 };
 
 const getItems = async () => {
   const response = await prisma.Item.findMany({});
-  console.log(response);
+  //console.log(response);
   return response;
 };
 
@@ -159,7 +159,7 @@ const getSpecificItems = async (itemIDs) => {
         },
       },
     });
-    console.log(response);
+    // console.log(response);
     return response;
   } catch (error) {
     console.error("Item not found: ", error);
@@ -172,7 +172,7 @@ const getItem = async (id) => {
       id,
     },
   });
-  console.log(response);
+  // console.log(response);
   return response;
 };
 
@@ -185,7 +185,7 @@ const postAudio = async (id, user, name, description) => {
       description,
     },
   });
-  console.log(response);
+  // console.log(response);
   return response;
 };
 
@@ -198,7 +198,7 @@ const createComment = async (itemID, commentText, userID) => {
       // reviewID,
     },
   });
-  console.log(response);
+  //  console.log(response);
   return response;
 };
 
@@ -212,7 +212,7 @@ const createReply = async (userID, commentText, parentCommentId, itemID) => {
         itemID,
       },
     });
-    console.log(response);
+    //   console.log(response);
     return response;
   } catch (error) {
     console.error(error);
@@ -232,7 +232,7 @@ const getComments = async (userID) => {
     //   },
     // },
   });
-  console.log(response);
+  // console.log(response);
   return response;
 };
 
@@ -247,9 +247,14 @@ const getAudioComment = async (itemID) => {
           childComments: true,
         },
       },
+      user: {
+        select: {
+          username: true,
+        },
+      },
     },
   });
-  console.log(response);
+  // console.log(response);
   return response;
 };
 
@@ -263,7 +268,7 @@ const updateComment = async (userID, id, commentText) => {
       commentText,
     },
   });
-  console.log(response);
+  // console.log(response);
   return response;
 };
 
@@ -279,7 +284,7 @@ const getReactComment = async (commentIDs) => {
       reactionType: true,
     },
   });
-  console.log(response);
+  // console.log(response);
   return response;
 };
 
@@ -303,7 +308,7 @@ const postReactComment = async (userID, commentID, reaction) => {
       reactionType: reaction,
     },
   });
-  console.log(response);
+  // console.log(response);
   return response;
 };
 
@@ -314,7 +319,7 @@ const deleteComment = async (userID, id) => {
       userID,
     },
   });
-  console.log(response);
+  // console.log(response);
   return response;
 };
 
