@@ -34,10 +34,10 @@ const isLoggedIn = async (req, res, next) => {
 
 router.post("/register", async (req, res, next) => {
   try {
-    const { username, email, normal_password } = req.body;
+    const { username, email, normal_password, photoId } = req.body;
     const salt = await bcrypt.genSalt(10);
     const password = await bcrypt.hash(normal_password, salt);
-    const response = await createUser(username, email, password);
+    const response = await createUser(username, email, password, photoId);
     const token = jwt.sign({ id: response.id }, process.env.JWT);
     const me = response.id;
     res.send({ token, me });

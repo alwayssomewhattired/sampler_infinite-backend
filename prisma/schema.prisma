@@ -18,19 +18,21 @@ model User {
   username String @unique
   email String @unique
   password  String  @unique
-  photoId String @default("default")
+  photoId String
 
   // reviews Review[]
   comments Comment[]
   reactions CommentReaction[] 
+  items     Item[]  @relation("UserItems") 
 }
 
 model Item {
-  id  String  @id //@default(uuid())
+  id  String  @id 
   user String
   name String
   description String?
 
+ User        User?   @relation("UserItems", fields: [user], references: [id])
   comments Comment[]
   // reviews Review[]
 }

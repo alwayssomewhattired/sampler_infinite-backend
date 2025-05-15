@@ -17,12 +17,13 @@ const isLoggedIn = async (req, res, next) => {
   }
 };
 
-const createUser = async (username, email, password) => {
+const createUser = async (username, email, password, photoId) => {
   const response = await prisma.User.create({
     data: {
       username,
       email,
       password,
+      photoId,
     },
   });
   //console.log(response);
@@ -145,7 +146,16 @@ const updateUserPassword = async (id, password) => {
 };
 
 const getItems = async () => {
-  const response = await prisma.Item.findMany({});
+  const response = await prisma.Item.findMany({
+    include: {
+      User: {
+        select: {
+          username: true,
+          photoId: true,
+        },
+      },
+    },
+  });
   //console.log(response);
   return response;
 };
@@ -224,15 +234,12 @@ const getComments = async (userID) => {
     where: {
       userID,
     },
-    // include: {
-    //   childComments: {
-    //     include: {
-    //       childComments: true,
-    //     },
-    //   },
-    // },
+
+    include: {
+      reactions: true,
+    },
   });
-  // console.log(response);
+  console.log(response);
   return response;
 };
 
@@ -250,6 +257,7 @@ const getAudioComment = async (itemID) => {
       user: {
         select: {
           username: true,
+          photoId: true,
         },
       },
     },
