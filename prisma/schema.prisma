@@ -19,10 +19,12 @@ model User {
   email String @unique
   password  String  @unique
   photoId String
+  created_at DateTime @default (now())
 
   // reviews Review[]
   comments Comment[]
   reactions CommentReaction[] 
+  itemReactions ItemReaction[]
   items     Item[]  @relation("UserItems") 
 }
 
@@ -31,9 +33,11 @@ model Item {
   user String
   name String
   description String?
+  created_at DateTime @default (now())
 
  User        User?   @relation("UserItems", fields: [user], references: [id])
   comments Comment[]
+  reactions ItemReaction[]
   // reviews Review[]
 }
 
@@ -70,6 +74,17 @@ model CommentReaction {
   comment Comment @relation(fields: [commentID], references: [id], onDelete: Cascade)
 
   @@id([userID, commentID]) // Composite primary key
+}
+
+model ItemReaction {
+  userID String
+  itemID String
+  reactionType ReactionType
+
+  user User @relation(fields: [userID], references: [id])
+  item Item @relation(fields: [itemID], references: [id], onDelete: Cascade)
+
+  @@id([userID, itemID]) // Composite primary key
 }
 
 enum ReactionType {

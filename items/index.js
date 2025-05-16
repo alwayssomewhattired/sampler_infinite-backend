@@ -4,6 +4,7 @@ const {
   getItems,
   getItem,
   postAudio,
+  postReactItem,
   getSpecificItems,
   isLoggedIn,
   // getReview,
@@ -57,6 +58,22 @@ router.post("/:id/:user/:name", isLoggedIn, async (req, res, next) => {
       const name = req.params.name;
       const { description } = req.body;
       const response = await postAudio(id, user, name, description);
+      res.send(response);
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post("/:itemID/reactionItem", isLoggedIn, async (req, res, next) => {
+  try {
+    if (req.user == undefined) {
+      res.status(401).send("No user logged in.");
+    } else {
+      const userID = req.user.id;
+      const itemID = req.params.itemID;
+      const reaction = req.body.reaction;
+      const response = await postReactItem(userID, itemID, reaction);
       res.send(response);
     }
   } catch (error) {

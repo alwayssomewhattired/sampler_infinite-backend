@@ -9,6 +9,7 @@ const {
   getAllUsers,
   getOneUser,
   getUserNamesByIds,
+  getAboutHim,
   deleteUser,
   createPhoto,
   updateUserEmail,
@@ -74,17 +75,15 @@ router.get("/aboutMe", isLoggedIn, async (req, res, next) => {
   }
 });
 
-// router.get("/allUsers", isLoggedIn, async (req, res, next) => {
-//   try {
-//     if (req.user == undefined) {
-//       res.status(401).send("No user logged in.");
-//     }
-//     const response = await getAllUsers();
-//     res.send(response);
-//   } catch (error) {
-//     next(error);
-//   }
-// });
+router.get("/aboutHim/:profileId", async (req, res, next) => {
+  try {
+    const id = req.params.profileId;
+    const response = await getAboutHim(id);
+    res.send(response);
+  } catch (error) {
+    next(error);
+  }
+});
 
 router.get("/allUserNames", isLoggedIn, async (req, res, next) => {
   try {

@@ -76,12 +76,6 @@ const getUserNamesByIds = async (ids) => {
   return response;
 };
 
-const getAllUsers = async () => {
-  const response = await prisma.User.findMany({});
-  //console.log(response);
-  return response;
-};
-
 const getOneUser = async (id) => {
   const response = await prisma.User.findFirstOrThrow({
     where: {
@@ -89,6 +83,26 @@ const getOneUser = async (id) => {
     },
   });
   //console.log(response);
+  return response;
+};
+
+const getAllUsers = async () => {
+  const response = await prisma.User.findMany({});
+  //console.log(response);
+  return response;
+};
+
+const getAboutHim = async (id) => {
+  const response = await prisma.User.findFirstOrThrow({
+    where: {
+      id,
+    },
+    select: {
+      created_at: true,
+      photoId: true,
+      username: true,
+    },
+  });
   return response;
 };
 
@@ -154,6 +168,7 @@ const getItems = async () => {
           photoId: true,
         },
       },
+      reactions: true,
     },
   });
   //console.log(response);
@@ -193,6 +208,30 @@ const postAudio = async (id, user, name, description) => {
       user,
       name,
       description,
+    },
+  });
+  // console.log(response);
+  return response;
+};
+
+const postReactItem = async (userID, itemID, reaction) => {
+  const response = await prisma.itemReaction.upsert({
+    where: {
+      userID_itemID: {
+        // using the composite constraint
+        userID: userID,
+        itemID: itemID,
+      },
+    },
+    update: {
+      // if record already exists, then this
+      reactionType: reaction,
+    },
+    create: {
+      // if record doesn't exist, then this
+      userID: userID,
+      itemID: itemID,
+      reactionType: reaction,
     },
   });
   // console.log(response);
@@ -416,6 +455,7 @@ module.exports = {
   getAllUsers,
   getOneUser,
   getUserNamesByIds,
+  getAboutHim,
   deleteUser,
   createPhoto,
   updateUserUsername,
@@ -425,6 +465,7 @@ module.exports = {
   getSpecificItems,
   getItem,
   postAudio,
+  postReactItem,
   isLoggedIn,
   createComment,
   createReply,
