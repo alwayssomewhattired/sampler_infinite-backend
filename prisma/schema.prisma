@@ -35,7 +35,7 @@ model Item {
   description String?
   created_at DateTime @default (now())
 
- User        User?   @relation("UserItems", fields: [user], references: [id])
+  User     User?   @relation("UserItems", fields: [user], references: [id])
   comments Comment[]
   reactions ItemReaction[]
   // reviews Review[]

@@ -101,8 +101,12 @@ const getAboutHim = async (id) => {
       created_at: true,
       photoId: true,
       username: true,
+      reactions: true,
+      comments: true,
+      items: true,
     },
   });
+  console.log(response)
   return response;
 };
 
