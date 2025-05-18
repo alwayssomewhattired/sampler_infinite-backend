@@ -101,12 +101,20 @@ const getAboutHim = async (id) => {
       created_at: true,
       photoId: true,
       username: true,
-      reactions: true,
-      comments: true,
+      comments: {
+        select: {
+          created_at: true,
+          itemID: true,
+          userID: true,
+          commentText: true,
+          id: true,
+          reactions: true,
+        },
+      },
       items: true,
     },
   });
-  console.log(response)
+  console.log(response);
   return response;
 };
 
