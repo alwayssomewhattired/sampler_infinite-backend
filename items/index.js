@@ -7,7 +7,6 @@ const {
   postReactItem,
   getSpecificItems,
   isLoggedIn,
-  // getReview,
 } = require("../db");
 
 router.get("/allItems", async (req, res, next) => {
@@ -41,6 +40,7 @@ router.get("/specificItems", isLoggedIn, async (req, res, next) => {
 router.get("/:itemId", async (req, res, next) => {
   try {
     const id = req.params.itemId;
+    console.log(id);
     const response = await getItem(id);
     res.send(response);
   } catch (error) {
@@ -48,24 +48,7 @@ router.get("/:itemId", async (req, res, next) => {
   }
 });
 
-router.post("/:id/:user/:name", isLoggedIn, async (req, res, next) => {
-  try {
-    if (req.user == undefined) {
-      res.status(401).send("No user logged in.");
-    } else {
-      const id = req.params.id;
-      const user = req.params.user;
-      const name = req.params.name;
-      const { description } = req.body;
-      const response = await postAudio(id, user, name, description);
-      res.send(response);
-    }
-  } catch (error) {
-    next(error);
-  }
-});
-
-router.post("/:itemID/reactionItem", isLoggedIn, async (req, res, next) => {
+router.post("/reactionItem/:itemID", isLoggedIn, async (req, res, next) => {
   try {
     if (req.user == undefined) {
       res.status(401).send("No user logged in.");
@@ -79,16 +62,23 @@ router.post("/:itemID/reactionItem", isLoggedIn, async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-});
 
-// router.get("/:itemId/reviews", async (req, res, next) => {
-//   try {
-//     const itemID = req.params.itemId;
-//     const response = await getReview(itemID);
-//     res.send(response);
-//   } catch (error) {
-//     next(error);
-//   }
-// });
+  router.post("/:id/:user/:name", isLoggedIn, async (req, res, next) => {
+    try {
+      if (req.user == undefined) {
+        res.status(401).send("No user logged in.");
+      } else {
+        const id = req.params.id;
+        const user = req.params.user;
+        const name = req.params.name;
+        const { description } = req.body;
+        const response = await postAudio(id, user, name, description);
+        res.send(response);
+      }
+    } catch (error) {
+      next(error);
+    }
+  });
+});
 
 module.exports = router;

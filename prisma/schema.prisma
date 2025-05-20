@@ -36,9 +36,9 @@ model Item {
   created_at DateTime @default (now())
 
   User     User?   @relation("UserItems", fields: [user], references: [id])
+
   comments Comment[]
   reactions ItemReaction[]
-  // reviews Review[]
 }
 
 
@@ -60,9 +60,6 @@ model Comment {
   parentComment Comment? @relation("CommentReplies", fields: [parentCommentId], references: [id])
 
   childComments Comment[] @relation("CommentReplies")
-
-  // reviewID  String
-  // review Review @relation(fields: [reviewID], references: [id], onDelete: Cascade)
 }
 
 model CommentReaction {

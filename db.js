@@ -72,7 +72,6 @@ const getUserNamesByIds = async (ids) => {
   //console.log(response);
   // Map to extract names only
   // const names = response.map((User) => User.username);
-  // console.log(names);
   return response;
 };
 
@@ -82,13 +81,11 @@ const getOneUser = async (id) => {
       id,
     },
   });
-  //console.log(response);
   return response;
 };
 
 const getAllUsers = async () => {
   const response = await prisma.User.findMany({});
-  //console.log(response);
   return response;
 };
 
@@ -107,14 +104,23 @@ const getAboutHim = async (id) => {
           itemID: true,
           userID: true,
           commentText: true,
+          item: true,
           id: true,
           reactions: true,
         },
       },
-      items: true,
+      items: {
+        select: {
+          reactions: true,
+          id: true,
+          user: true,
+          name: true,
+          description: true,
+          created_at: true,
+        },
+      },
     },
   });
-  console.log(response);
   return response;
 };
 
@@ -124,7 +130,6 @@ const deleteUser = async (id) => {
       id,
     },
   });
-  //console.log(response);
   return response;
 };
 
@@ -183,7 +188,6 @@ const getItems = async () => {
       reactions: true,
     },
   });
-  //console.log(response);
   return response;
 };
 
@@ -196,7 +200,6 @@ const getSpecificItems = async (itemIDs) => {
         },
       },
     });
-    // console.log(response);
     return response;
   } catch (error) {
     console.error("Item not found: ", error);
@@ -208,8 +211,15 @@ const getItem = async (id) => {
     where: {
       id,
     },
+    select: {
+      name: true,
+      description: true,
+      created_at: true,
+      User: true,
+      reactions: true,
+      id: true,
+    },
   });
-  // console.log(response);
   return response;
 };
 
@@ -227,27 +237,30 @@ const postAudio = async (id, user, name, description) => {
 };
 
 const postReactItem = async (userID, itemID, reaction) => {
-  const response = await prisma.itemReaction.upsert({
-    where: {
-      userID_itemID: {
-        // using the composite constraint
+  try {
+    const response = await prisma.itemReaction.upsert({
+      where: {
+        userID_itemID: {
+          // using the composite constraint
+          userID: userID,
+          itemID: itemID,
+        },
+      },
+      update: {
+        // if record already exists, then this
+        reactionType: reaction,
+      },
+      create: {
+        // if record doesn't exist, then this
         userID: userID,
         itemID: itemID,
+        reactionType: reaction,
       },
-    },
-    update: {
-      // if record already exists, then this
-      reactionType: reaction,
-    },
-    create: {
-      // if record doesn't exist, then this
-      userID: userID,
-      itemID: itemID,
-      reactionType: reaction,
-    },
-  });
-  // console.log(response);
-  return response;
+    });
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 const createComment = async (itemID, commentText, userID) => {
@@ -378,87 +391,8 @@ const deleteComment = async (userID, id) => {
       userID,
     },
   });
-  // console.log(response);
   return response;
 };
-
-// const getReview = async (itemID) => {
-//   const response = await prisma.Review.findMany({
-//     where: {
-//       itemID,
-//     },
-//   });
-//   console.log(response);
-//   return response;
-// };
-
-// const getSpecificReview = async (itemID, id) => {
-//   const response = await prisma.Review.findFirstOrThrow({
-//     where: {
-//       itemID,
-//       id,
-//     },
-//   });
-//   console.log(response);
-//   return response;
-// };
-
-// const getReviewComments = async (reviewID) => {
-//   const response = await prisma.Comment.findMany({
-//     where: {
-//       reviewID,
-//     },
-//   });
-//   console.log(response);
-//   return response;
-// };
-
-// const getReviews = async (userID) => {
-//   const response = await prisma.Review.findMany({
-//     where: {
-//       userID,
-//     },
-//   });
-//   console.log(response);
-//   return response;
-// };
-
-// const createReview = async (itemID, reviewText, userID) => {
-//   const response = await prisma.Review.create({
-//     data: {
-//       reviewText,
-//       userID,
-//       itemID,
-//     },
-//   });
-//   console.log(response);
-//   return response;
-// };
-
-// const updateReview = async (userID, id) => {
-//   const response = await prisma.Review.update({
-//     where: {
-//       id,
-//       userID,
-//     },
-//     data: {
-//       reviewText,
-//     },
-//   });
-//   console.log(response);
-//   return response;
-// };
-
-// const deleteReview = async (userID, id) => {
-//   const response = await prisma.Review.delete({
-//     where: {
-//       id,
-//       userID,
-//     },
-//   });
-//   console.log(response);
-//   return response;
-// };
 
 module.exports = {
   createUser,
@@ -487,11 +421,4 @@ module.exports = {
   postReactComment,
   getReactComment,
   deleteComment,
-  // getReview,
-  // getReviews,
-  // getSpecificReview,
-  // getReviewComments,
-  // createReview,
-  // updateReview,
-  // deleteReview,
 };
