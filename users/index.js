@@ -9,6 +9,7 @@ const {
   getAllUsers,
   getOneUser,
   getUserNamesByIds,
+  getAboutSelf,
   getAboutHim,
   deleteUser,
   createPhoto,
@@ -70,6 +71,19 @@ router.get("/aboutMe", isLoggedIn, async (req, res, next) => {
     req.user == undefined
       ? res.status(401).send("No user logged in.")
       : res.status(200).send(req.user);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get("/aboutSelf", isLoggedIn, async (req, res, next) => {
+  try {
+    if (req.user == undefined) {
+      res.status(401).send("No user logged in.");
+    }
+    const id = req.user.id;
+    const response = await getAboutSelf(id);
+    res.send(response);
   } catch (error) {
     next(error);
   }

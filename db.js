@@ -89,6 +89,42 @@ const getAllUsers = async () => {
   return response;
 };
 
+const getAboutSelf = async (id) => {
+  const response = await prisma.User.findFirstOrThrow({
+    where: {
+      id,
+    },
+    select: {
+      created_at: true,
+      photoId: true,
+      username: true,
+      email: true,
+      comments: {
+        select: {
+          created_at: true,
+          itemID: true,
+          userID: true,
+          commentText: true,
+          item: true,
+          id: true,
+          reactions: true,
+        },
+      },
+      items: {
+        select: {
+          reactions: true,
+          id: true,
+          user: true,
+          name: true,
+          description: true,
+          created_at: true,
+        },
+      },
+    },
+  });
+  return response;
+};
+
 const getAboutHim = async (id) => {
   const response = await prisma.User.findFirstOrThrow({
     where: {
@@ -326,7 +362,6 @@ const getAudioComment = async (itemID) => {
       },
     },
   });
-  // console.log(response);
   return response;
 };
 
@@ -380,7 +415,6 @@ const postReactComment = async (userID, commentID, reaction) => {
       reactionType: reaction,
     },
   });
-  // console.log(response);
   return response;
 };
 
@@ -401,6 +435,7 @@ module.exports = {
   getAllUsers,
   getOneUser,
   getUserNamesByIds,
+  getAboutSelf,
   getAboutHim,
   deleteUser,
   createPhoto,
