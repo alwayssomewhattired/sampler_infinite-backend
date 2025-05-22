@@ -115,7 +115,6 @@ router.get("/allUserNames", isLoggedIn, async (req, res, next) => {
 router.post("/allUserNamez", async (req, res, next) => {
   try {
     const { ids } = req.body;
-    console.log(ids);
     const response = await getUserNamesByIds(ids);
     res.send(response);
   } catch (error) {

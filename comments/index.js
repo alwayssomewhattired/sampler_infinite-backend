@@ -20,12 +20,10 @@ router.post("/:itemId/comments", isLoggedIn, async (req, res, next) => {
       res.status(401).send("No user logged in.");
     } else {
       const itemID = req.params.itemId;
-      // const reviewID = req.params.reviewId;
       const userID = req.user.id;
       const { commentText } = req.body;
       const response = await createComment(
         itemID,
-        // reviewID,
         commentText,
         userID
       );
@@ -103,13 +101,9 @@ router.get("/me", isLoggedIn, async (req, res, next) => {
 
 router.get("/:itemId/comment", isLoggedIn, async (req, res, next) => {
   try {
-    // if (req.user == undefined) {
-    //   res.status(401).send("No user logged in.");
-    // } else {
     const itemID = req.params.itemId;
     const response = await getAudioComment(itemID);
     res.send(response);
-    // }
   } catch (error) {
     next(error);
   }

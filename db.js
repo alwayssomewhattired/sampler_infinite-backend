@@ -26,7 +26,6 @@ const createUser = async (username, email, password, photoId) => {
       photoId,
     },
   });
-  //console.log(response);
   return response;
 };
 
@@ -36,7 +35,6 @@ const loginUser = async (email) => {
       email,
     },
   });
-  //console.log(response);
   return response;
 };
 
@@ -52,26 +50,22 @@ const getUser = async (id) => {
       photoId: true,
     },
   });
-  //console.log(response);
   return response;
 };
 
 const getUserNamesByIds = async (ids) => {
-  console.log(ids);
   const response = await prisma.User.findMany({
     where: {
       id: {
-        in: ids, // Use 'in' to filter multiple IDs
+        in: ids,
       },
     },
     select: {
       id: true,
-      username: true, // Only select the 'name' field
+      username: true, 
     },
   });
-  //console.log(response);
-  // Map to extract names only
-  // const names = response.map((User) => User.username);
+
   return response;
 };
 
@@ -186,7 +180,6 @@ const updateUserEmail = async (id, email) => {
     },
     data: { email },
   });
-  //console.log(response);
   return response;
 };
 
@@ -197,7 +190,6 @@ const updateUserUsername = async (id, username) => {
     },
     data: { username },
   });
-  //console.log(response);
   return response;
 };
 
@@ -208,7 +200,6 @@ const updateUserPassword = async (id, password) => {
     },
     data: { password },
   });
-  //console.log(response);
   return response;
 };
 
@@ -268,7 +259,6 @@ const postAudio = async (id, user, name, description) => {
       description,
     },
   });
-  // console.log(response);
   return response;
 };
 
@@ -305,10 +295,8 @@ const createComment = async (itemID, commentText, userID) => {
       commentText,
       userID,
       itemID,
-      // reviewID,
     },
   });
-  //  console.log(response);
   return response;
 };
 
@@ -322,7 +310,6 @@ const createReply = async (userID, commentText, parentCommentId, itemID) => {
         itemID,
       },
     });
-    //   console.log(response);
     return response;
   } catch (error) {
     console.error(error);
@@ -339,7 +326,6 @@ const getComments = async (userID) => {
       reactions: true,
     },
   });
-  console.log(response);
   return response;
 };
 
@@ -375,7 +361,6 @@ const updateComment = async (userID, id, commentText) => {
       commentText,
     },
   });
-  // console.log(response);
   return response;
 };
 
@@ -391,7 +376,6 @@ const getReactComment = async (commentIDs) => {
       reactionType: true,
     },
   });
-  // console.log(response);
   return response;
 };
 
