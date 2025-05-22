@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
   provider = "prisma-client-js"
@@ -88,17 +83,3 @@ enum ReactionType {
   like
   dislike
 }
-
-// model Review {
-//   id  String @id @default(uuid())
-//   reviewText String
-
-//   userID String
-//   review User @relation(fields: [userID], references: [id], onDelete: Cascade)
-
-//   itemID String
-//   item Item @relation(fields: [itemID], references: [id], onDelete: Cascade)
-
-//   @@unique([userID, itemID])
-//   comments Comment[]
-// }

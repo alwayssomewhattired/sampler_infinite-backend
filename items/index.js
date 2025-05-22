@@ -18,7 +18,6 @@ router.get("/allItems", async (req, res, next) => {
   }
 });
 
-// USE QUERY INSTEAD OF PARAMS
 router.get("/specificItems", isLoggedIn, async (req, res, next) => {
   try {
     if (req.user == undefined) {
@@ -40,7 +39,6 @@ router.get("/specificItems", isLoggedIn, async (req, res, next) => {
 router.get("/:itemId", async (req, res, next) => {
   try {
     const id = req.params.itemId;
-    console.log(id);
     const response = await getItem(id);
     res.send(response);
   } catch (error) {
