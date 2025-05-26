@@ -1,6 +1,12 @@
 const { prisma } = require("./common");
 const jwt = require("jsonwebtoken");
 
+let prisma;
+
+(async () => {
+  prisma = await getPrisma();
+})();
+
 const isLoggedIn = async (req, res, next) => {
   const authHeader = req.headers.authorization;
   const token = authHeader?.slice(7);
