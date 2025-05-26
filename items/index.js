@@ -1,5 +1,7 @@
 const router = require("express").Router();
 
+console.log("WELCOME")
+
 const {
   getItems,
   getItem,
