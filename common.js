@@ -1,7 +1,7 @@
 
 const { PrismaClient } = require("@prisma/client");
 let prisma;
-const dev = true;
+const dev = false;
 
 const {
   SecretsManagerClient,
