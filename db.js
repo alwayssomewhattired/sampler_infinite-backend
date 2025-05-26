@@ -1,5 +1,9 @@
-const { prisma } = require("./common");
+const { prisma, dev, getPrismaClient } = require("./common");
 const jwt = require("jsonwebtoken");
+
+if (!dev) {
+  prisma = getPrismaClient();
+}
 
 const isLoggedIn = async (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -62,7 +66,7 @@ const getUserNamesByIds = async (ids) => {
     },
     select: {
       id: true,
-      username: true, 
+      username: true,
     },
   });
 
