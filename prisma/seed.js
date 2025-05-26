@@ -437,7 +437,7 @@ async function main() {
   await prisma.Comment.create({
     data: {
       id: "commenttest10",
-      commentText: "ALL hail sun-ra!",
+      commentText: "Wait, is this darude sandstorm lol",
       itemID: "211e548c-be2d-4f53-b441-0566b538290c.wav",
       userID: "usertest10",
     },
