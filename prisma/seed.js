@@ -1,89 +1,7 @@
-const wav = {
-  //   "Alien Drums": [
-  //     "00368d9a-3422-4020-ba5e-3db291a76ab6.wav",
-  //     "Some drum sounds with a distorted drone",
-  //   ],
-  //   "Same Piano": [
-  //     "0cfdca09-90df-4685-ba2c-96bef006d498.wav",
-  //     "Constant piano note with a little drum noise",
-  //   ],
-  "Male Note": [
-    "0da3e2ff-1777-42a3-b840-d32b62f91623.wav",
-    "Continuous single male note with smooth pop background",
-  ],
-  "Ambient Phone": [
-    "143fef79-50aa-4b99-be4a-28bcece5fe62.wav",
-    "One wave of ambient flip-phone quality",
-  ],
-  "Indian Street Insanity": [
-    "0a14553b-f920-4c9e-84ca-a676a22eb9ab.wav",
-    "Sounds like the busy streets of South Asia",
-  ],
-  "Balloon Strings": [
-    "0ff3fdc7-fa19-4071-9da8-e1acac0e74d2.wav",
-    "Sounds like stretched plastic being plucked",
-  ],
-  "Female Note": [
-    "14f5d4f5-81a3-4746-b81c-bf2c9880b3f5.wav",
-    "She sounds nice",
-  ],
-  "Space Ambience": [
-    "211e548c-be2d-4f53-b441-0566b538290c.wav",
-    "INTERPLANETARY MUSIC!!!",
-  ],
-  "Creepy Buzz": [
-    "2d698d05-6e6e-49c2-b248-12c4ae28069f.wav",
-    "This is a weird one...",
-  ],
-  Royal: [
-    "42525738-e7f7-4bef-bfec-c5b7a5e472b9.wav",
-    "Take a trip through what feels like an old fantasy rpg.",
-  ],
-  "soft/heavy": [
-    "42ddedf1-56ba-4eb1-aadf-0b52eadafe84.wav",
-    "Ups and downs like this so-called LIFE :)",
-  ],
-  "old-time stutter": [
-    "57c34936-d743-459a-9081-518993cb57e7.wav",
-    "dinosaur recording of speech",
-  ],
-  "EXTREME ARCADE": [
-    "5d4ef0b9-bf95-45bd-bd87-bc088b7234f7.wav",
-    "Intense arcade match",
-  ],
-  "Vintage Strings": [
-    "6e4d6b00-a587-4747-87b0-993d11e358b3.wav",
-    "old Italian 60's flick??",
-  ],
-  "PiAnO gLiTcH": [
-    "8dd4d80d-1c8d-4a85-a9e3-48fc12f722df.wav",
-    "a grand piano with glitch",
-  ],
-  "Resonant Synth": [
-    "d9a24160-2ba1-4f65-bff0-13e2698c9cc5.wav",
-    "all hail the resonant synth",
-  ],
-  "Fast Marimba": [
-    "dbd10a19-af8e-425a-b894-35f853ee7424.wav",
-    "A marimba played fast. Like really fast",
-  ],
-  "BEAUTIFUL AMBIENCE": [
-    "1cf6ee35-9759-4efd-bd4b-19d97bf1a537.wav",
-    "All caps because this is very good",
-  ],
-  "evil jello": [
-    "25bea1f0-8241-4350-8746-749aa04dd1cb.wav",
-    "spooky sounds with evil jello",
-  ],
-  "Crystal Crash": [
-    "87ef0dc5-7a7b-48c8-a1b4-e812fecee444.wav",
-    "fades in with surreal ambience and switches to a more noisy version",
-  ],
-};
-
-const { prisma } = require("../common");
+const { getPrisma } = require("../common");
 
 async function main() {
+  const prisma = await getPrisma();
   await prisma.User.create({
     data: {
       id: "usertest1",
@@ -824,11 +742,7 @@ async function main() {
   console.log("Successful seeding!");
 }
 
-main()
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+main().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});

@@ -6,7 +6,12 @@ const {
 
 const secretName = "samplerinfinitePostgres";
 const region = "us-east-2";
+
+//////////////////////////////////////
+// HERE IS HOW YOU CHANGE ENVIRONMENTS
+//////////////////////////////////////
 const dev = true;
+////////////
 
 let prismaInstance = null;
 

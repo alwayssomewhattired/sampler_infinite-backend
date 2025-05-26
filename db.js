@@ -1,4 +1,4 @@
-const { prisma } = require("./common");
+const { getPrisma } = require("./common");
 const jwt = require("jsonwebtoken");
 
 let prisma;
@@ -68,7 +68,7 @@ const getUserNamesByIds = async (ids) => {
     },
     select: {
       id: true,
-      username: true, 
+      username: true,
     },
   });
 
