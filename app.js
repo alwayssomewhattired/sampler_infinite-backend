@@ -6,16 +6,21 @@ const cors = require("cors");
 app.use(morgan("dev"));
 app.use(express.json());
 
-app.use(cors({
-  origin: 'https://www.samplerinfinite.com',
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: "https://www.samplerinfinite.com",
+    credentials: true,
+  })
+);
 
 // Important: Handle preflight OPTIONS requests
-app.options('*', cors({
-  origin: 'https://www.samplerinfinite.com',
-  credentials: true
-}));
+app.options(
+  "*",
+  cors({
+    origin: "https://www.samplerinfinite.com",
+    credentials: true,
+  })
+);
 
 app.use("/api/users", require("./users/index"));
 app.use("/api/items", require("./items/index"));
