@@ -1,10 +1,4 @@
 const { PrismaClient } = require("@prisma/client");
-<<<<<<< HEAD
-=======
-let prisma;
-const dev = false;
-
->>>>>>> fcfeb0064bd3cafdceeb46d72f96749747cf11fe
 const {
   SecretsManagerClient,
   GetSecretValueCommand,
