@@ -5,7 +5,7 @@
 set -x
 
 
-cd /home/ec2-user/sampler_infinite-backend || {
+cd /home/ec2-user/bridge_backend || {
  echo "Failed to cd into repo directory"
  exit 1
 }
