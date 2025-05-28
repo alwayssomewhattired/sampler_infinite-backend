@@ -34,7 +34,6 @@ while true; do
 
         echo "Finished!"
 
-        cd ..
     fi
 
     sleep 60
