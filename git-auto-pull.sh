@@ -30,7 +30,7 @@ while true; do
         git pull --ff-only $REMOTE $BRANCH
 
         echo "Installing dependencies..."
-        npm install
+        sudo npm install
 
         echo "Finished!"
 
