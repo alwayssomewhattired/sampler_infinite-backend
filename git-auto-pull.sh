@@ -14,7 +14,7 @@ echo "Current directory: $(pwd)"
 echo "Running git pull..."
 
 REMOTE=prod
-BRANCH=main
+BRANCH=prod
 
 while true; do
     git fetch $REMOTE $BRANCH
