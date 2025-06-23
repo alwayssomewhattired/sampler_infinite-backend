@@ -14,7 +14,7 @@ dotenv.config({ path: path.resolve(process.cwd(), envFile) });
 
 app.use(
   cors({
-    origin: process.env.API_URL,
+    origin: process.env.USERBASE_API_URL,
     credentials: true,
   })
 );
@@ -23,7 +23,7 @@ app.use(
 app.options(
   "*",
   cors({
-    origin: process.env.API_URL,
+    origin: process.env.USERBASE_API_URL,
     credentials: true,
   })
 );
