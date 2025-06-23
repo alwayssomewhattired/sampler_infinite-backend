@@ -6,9 +6,15 @@ const cors = require("cors");
 app.use(morgan("dev"));
 app.use(express.json());
 
+const dotenv = require("dotenv")
+const path = require("path")
+
+const envFile = `.env.${process.env.NODE_ENV}`;
+dotenv.config({ path: path.resolve(process.cwd(), envFile) });
+
 app.use(
   cors({
-    origin: "https://www.samplerinfinite.com",
+    origin: process.env.API_URL,
     credentials: true,
   })
 );
@@ -17,7 +23,7 @@ app.use(
 app.options(
   "*",
   cors({
-    origin: "https://www.samplerinfinite.com",
+    origin: process.env.API_URL,
     credentials: true,
   })
 );

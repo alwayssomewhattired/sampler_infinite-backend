@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon index.js",
-    "start:dev": "NODE_ENV=development nodemon index.js",
+    "start:dev": "cross-env NODE_ENV=development nodemon index.js",
     "start:prod": "NODE_ENV=production node index.js"
   },
   "prisma": {
@@ -30,5 +30,8 @@
     "multer-s3": "^3.0.1",
     "nodemon": "^3.1.9",
     "prisma": "^6.3.1"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
   }
 }
