@@ -16,7 +16,6 @@ model User {
   photoId String
   created_at DateTime @default (now())
 
-  // reviews Review[]
   comments Comment[]
   reactions CommentReaction[] 
   itemReactions ItemReaction[]

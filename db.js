@@ -1,7 +1,6 @@
 const { getPrisma } = require("./common");
 const jwt = require("jsonwebtoken");
 
-
 let prisma;
 
 (async () => {

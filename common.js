@@ -3,10 +3,17 @@ const {
   SecretsManagerClient,
   GetSecretValueCommand,
 } = require("@aws-sdk/client-secrets-manager");
+const dotenv = require("dotenv");
+const path = require("path");
 
-const secretName = "samplerinfinitePostgres";
-const region = "us-east-2";
-const dev = false;
+const envFile = `.env.${process.env.NODE_ENV || "production"}`;
+dotenv.config({ path: path.resolve(process.cwd(), envFile) });
+
+console.log("Loaded ENV: ", process.env.NODE_ENV);
+
+const secretName = process.env.SECRET_NAME;
+const region = process.env.REGION;
+const dev = process.env.DATABASE_ENVIRONMENT;
 
 let prismaInstance = null;
 

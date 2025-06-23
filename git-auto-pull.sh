@@ -5,7 +5,7 @@
 set -x
 
 
-cd /home/ec2-user/bridge_backend || {
+cd /home/ec2-user/sampler_infinite-backend || {
  echo "Failed to cd into repo directory"
  exit 1
 }
@@ -14,7 +14,7 @@ echo "Current directory: $(pwd)"
 echo "Running git pull..."
 
 REMOTE=prod
-BRANCH=prod
+BRANCH=main
 
 while true; do
     git fetch $REMOTE $BRANCH
@@ -30,10 +30,11 @@ while true; do
         git pull --ff-only $REMOTE $BRANCH
 
         echo "Installing dependencies..."
-        sudo npm install
+        npm install
 
         echo "Finished!"
 
+        cd ..
     fi
 
     sleep 60
