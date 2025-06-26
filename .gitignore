@@ -5,3 +5,4 @@ node_modules
 app.js
 common.js
 index.js
+start.sh
