@@ -13,7 +13,7 @@ cd /home/ec2-user/bridge_backend || {
 echo "Current directory: $(pwd)"
 echo "Running git pull..."
 
-REMOTE=prod
+REMOTE=origin
 BRANCH=main
 REMOTE_BRANCH="$REMOTE/$BRANCH"
 
