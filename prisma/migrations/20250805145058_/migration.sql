@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Items" ALTER COLUMN "user" DROP DEFAULT;

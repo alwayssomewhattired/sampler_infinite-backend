@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -9,32 +8,48 @@ datasource db {
 }
 
 model User {
-  id  String  @id @default(uuid())
-  username String @unique
-  email String @unique
-  password  String  @unique
-  photoId String
-  created_at DateTime @default (now())
+  id         String   @id @default(uuid())
+  username   String   @unique
+  email      String   @unique
+  password   String   @unique
+  photoId    String
+  created_at DateTime @default(now())
 
-  comments Comment[]
-  reactions CommentReaction[] 
-  itemReactions ItemReaction[]
-  items     Item[]  @relation("UserItems") 
+  comments             Comment[]
+  reactions            CommentReaction[]
+  itemReactions        ItemReaction[]
+  itemsReactions       ItemsReaction[]
+  items                Item[]            @relation("UserItems")
+  sampledinfinitepacks Items[]           @relation("UserSampledinfinitepacks")
 }
 
 model Item {
-  id  String  @id 
-  user String
-  name String
+  id          String   @id
+  user        String
+  name        String
   description String?
-  created_at DateTime @default (now())
+  created_at  DateTime @default(now())
 
-  User     User?   @relation("UserItems", fields: [user], references: [id])
+  User User? @relation("UserItems", fields: [user], references: [id])
 
-  comments Comment[]
+  comments  Comment[]
   reactions ItemReaction[]
 }
 
+model Items {
+  id          String @id @default(uuid())
+  user        String   
+  itemIDS     String[]
+  name        String
+  description String?
+  created_at  DateTime @default(now())
+
+  User User? @relation("UserSampledinfinitepacks", fields: [user], references: [id])
+
+  comments       Comment[]
+  ItemsReactions ItemsReaction[]
+  Items          ItemReaction[]
+}
 
 model Comment {
   id          String @id @default(uuid())
@@ -44,38 +59,53 @@ model Comment {
   user   User?   @relation(fields: [userID], references: [id])
 
   itemID String
-  item Item @relation(fields: [itemID], references: [id])
+  item   Item   @relation(fields: [itemID], references: [id])
 
-  created_at DateTime @default (now())
+  created_at DateTime @default(now())
 
   reactions CommentReaction[]
 
   parentCommentId String?
-  parentComment Comment? @relation("CommentReplies", fields: [parentCommentId], references: [id])
+  parentComment   Comment? @relation("CommentReplies", fields: [parentCommentId], references: [id])
 
   childComments Comment[] @relation("CommentReplies")
+  Items         Items?    @relation(fields: [itemsId], references: [id])
+  itemsId       String?
 }
 
 model CommentReaction {
-  userID String
-  commentID String
+  userID       String
+  commentID    String
   reactionType ReactionType
 
-  user User @relation(fields: [userID], references: [id])
+  user    User    @relation(fields: [userID], references: [id])
   comment Comment @relation(fields: [commentID], references: [id], onDelete: Cascade)
 
   @@id([userID, commentID]) // Composite primary key
 }
 
 model ItemReaction {
-  userID String
-  itemID String
+  userID       String
+  itemID       String
   reactionType ReactionType
 
-  user User @relation(fields: [userID], references: [id])
-  item Item @relation(fields: [itemID], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userID], references: [id])
+  item    Item    @relation(fields: [itemID], references: [id], onDelete: Cascade)
+  Items   Items?  @relation(fields: [itemsId], references: [id])
+  itemsId String?
 
   @@id([userID, itemID]) // Composite primary key
+}
+
+model ItemsReaction {
+  userID       String
+  itemID       String
+  reactionType ReactionType
+
+  user  User @relation(fields: [userID], references: [id])
+  items Items @relation(fields: [itemID], references: [id])
+
+  @@id([userID, itemID])
 }
 
 enum ReactionType {

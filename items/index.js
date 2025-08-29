@@ -2,8 +2,11 @@ const router = require("express").Router();
 
 const {
   getItems,
+  getPack,
+  getPacks,
   getItem,
   postAudio,
+  postAudios,
   postReactItem,
   getSpecificItems,
   isLoggedIn,
@@ -12,6 +15,26 @@ const {
 router.get("/allItems", async (req, res, next) => {
   try {
     const response = await getItems();
+    res.send(response);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get("/allPacks", async (req, res, next) => {
+  try {
+    const response = await getPacks();
+    res.send(response);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get("/pack/:id", async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    if (!id) return res.status(400).send("Missing pack id");
+    const response = await getPack(id);
     res.send(response);
   } catch (error) {
     next(error);
@@ -46,6 +69,20 @@ router.get("/:itemId", async (req, res, next) => {
   }
 });
 
+router.post("/reactionItems/:itemID", isLoggedIn, async (req, res, next) => {
+  try {
+    if (req.user == undefined) {
+      res.status(401).send("No user logged in.");
+    } else {
+      const userID = req.user.id;
+      const itemID = req.params.itemID;
+      const reaction = req.body.reaction;
+      const response = await postReactItems(userID, itemID, reaction);
+      res.send(response);
+    }
+  } catch (error) {}
+});
+
 router.post("/reactionItem/:itemID", isLoggedIn, async (req, res, next) => {
   try {
     if (req.user == undefined) {
@@ -60,23 +97,41 @@ router.post("/reactionItem/:itemID", isLoggedIn, async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+});
 
-  router.post("/:id/:user/:name", isLoggedIn, async (req, res, next) => {
-    try {
-      if (req.user == undefined) {
-        res.status(401).send("No user logged in.");
-      } else {
-        const id = req.params.id;
-        const user = req.params.user;
-        const name = req.params.name;
-        const { description } = req.body;
-        const response = await postAudio(id, user, name, description);
-        res.send(response);
-      }
-    } catch (error) {
-      next(error);
+router.post("/sampledinfinitepack", isLoggedIn, async (req, res, next) => {
+  try {
+    if (req.user == undefined) {
+      res.status(401).send("No user logged in.");
+    } else {
+      const user = req.user.id;
+      const itemIDS = req.body.chosenAudio;
+      const name = req.body.name;
+      const description = req.body.description;
+      const response = await postAudios(user, itemIDS, name, description);
+      console.log(response);
+      res.send(response);
     }
-  });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post("/:id/:user/:name", isLoggedIn, async (req, res, next) => {
+  try {
+    if (req.user == undefined) {
+      res.status(401).send("No user logged in.");
+    } else {
+      const id = req.params.id;
+      const user = req.params.user;
+      const name = req.params.name;
+      const { description } = req.body;
+      const response = await postAudio(id, user, name, description);
+      res.send(response);
+    }
+  } catch (error) {
+    next(error);
+  }
 });
 
 module.exports = router;

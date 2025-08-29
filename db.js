@@ -1,3 +1,4 @@
+const { CloudWatchLogs } = require("aws-sdk");
 const { getPrisma } = require("./common");
 const jwt = require("jsonwebtoken");
 
@@ -224,6 +225,34 @@ const getItems = async () => {
   return response;
 };
 
+const getPack = async (id) => {
+  const response = await prisma.Items.findFirstOrThrow({
+    where: {
+      id,
+    },
+    select: {
+      itemIDS: true,
+      name: true,
+    },
+  });
+  return response;
+};
+
+const getPacks = async () => {
+  const response = await prisma.Items.findMany({
+    include: {
+      User: {
+        select: {
+          username: true,
+          photoId: true,
+        },
+      },
+      ItemsReactions: true,
+    },
+  });
+  return response;
+};
+
 const getSpecificItems = async (itemIDs) => {
   try {
     const response = await prisma.Item.findMany({
@@ -266,6 +295,43 @@ const postAudio = async (id, user, name, description) => {
     },
   });
   return response;
+};
+
+const postAudios = async (user, itemIDS, name, description) => {
+  const response = await prisma.Items.create({
+    data: {
+      user,
+      itemIDS,
+      name,
+      description,
+    },
+  });
+  console.log("db response: ", response);
+  return response;
+};
+
+const postReactItems = async (userID, itemID, reaction) => {
+  try {
+    const response = await prisma.itemsReaction.upser({
+      where: {
+        userID_itemID: {
+          userID: userID,
+          itemID: itemID,
+        },
+      },
+      update: {
+        reactionType: reaction,
+      },
+      create: {
+        userID: userID,
+        itemID: itemID,
+        reactionType: reaction,
+      },
+    });
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 const postReactItem = async (userID, itemID, reaction) => {
@@ -433,9 +499,13 @@ module.exports = {
   updateUserEmail,
   updateUserPassword,
   getItems,
+  getPack,
+  getPacks,
   getSpecificItems,
   getItem,
   postAudio,
+  postAudios,
+  postReactItems,
   postReactItem,
   isLoggedIn,
   createComment,
